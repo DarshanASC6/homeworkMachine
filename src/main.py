@@ -2,7 +2,6 @@
 from googlesearch import search 
 from bs4 import BeautifulSoup
 import urllib.request
-import random
 
 # Web search via Google
 def searchWeb(query):
@@ -46,8 +45,13 @@ def searchWebSpecific(query, sourceFile):
 
 
 # quickAnswer script is for exactly what it looks like: A quick answer to a question, without using Google.
-def quickAnswer():
-    url = 'https://google.com/search?q=What+is+the+answer+to+life+the+universe+and+everything'
+def quickAnswer(query):
+
+   #Use a user specified search query, then format it for Google
+    listQuery = query.split()
+    query = '+'.join(listQuery)
+
+    url = 'https://google.com/search?q=' + query
     
     request = urllib.request.Request(url)
 
@@ -59,11 +63,15 @@ def quickAnswer():
     soup = BeautifulSoup(html, 'html.parser')
 
     divs = soup.select("#search div.g")
+
     for div in divs:
         results = div.select("h3")
-
+# Get the URL as well
         if (len(results) >= 1):
 
             h3 = results[0]
 
             print(h3.get_text())
+
+        # Testing the beautifulsoup function
+quickAnswer("What is the answer to life, the universe, and everything else?")
